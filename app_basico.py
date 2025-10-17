@@ -18,7 +18,6 @@ from streamlit.components.v1 import html as st_html
 
 
 # ====== Dependências opcionais (tratamos fallback) ======
-
 _WORDCLOUD_AVAILABLE = True
 try:
     from wordcloud import WordCloud
