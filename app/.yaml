@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  conversas-api:
+    # --- Build direto do seu Git (Docker baixa o código como contexto) ---
+    build:
+      context: <GIT_URL>#<BRANCH>:<PATH_NO_REPO>
+      dockerfile: Dockerfile
+    image: etchats/conversas-api:latest
+
+    # --- Variáveis de ambiente (use "Env" no Portainer para preencher as ${...}) ---
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      OPENAI_TEMPERATURE: ${OPENAI_TEMPERATURE:-0.2}
+      OPENAI_MAX_TOKENS: ${OPENAI_MAX_TOKENS:-400}
+      API_TOKEN: ${API_TOKEN}
+
+    # --- Porta local (funciona mesmo sem proxy) ---
+    ports:
+      - "8080:8080"
+
+    # --- Healthcheck ---
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+    restart: unless-stopped
+
+    # --- (Opcional) Integração Traefik: descomente se você já tiver Traefik na rede 'web' ---
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.conversas.rule=Host(`${DOMAIN}`)
+    #   - traefik.http.routers.conversas.entrypoints=websecure
+    #   - traefik.http.routers.conversas.tls.certresolver=letsencrypt
+    #   - traefik.http.services.conversas.loadbalancer.server.port=8080
+    # networks:
+    #   - web
+
+# networks:
+#   web:
+#     external: true

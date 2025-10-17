@@ -17,16 +17,16 @@ class ChatIn(BaseModel):
         None, ge=1, description="Limite de tokens da resposta."
     )
 
-    # # Exemplo mostrado no Swagger
-    # model_config = ConfigDict(
-    #     json_schema_extra={
-    #         "example": {
-    #             "message": "Resuma em 2 linhas as vantagens do meu produto.",
-    #             "temperature": 0.2,
-    #             "max_tokens": 400
-    #         }
-    #     }
-    # )
+    # Exemplo mostrado no Swagger
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "message": "Resuma em 2 linhas as vantagens do meu produto.",
+                "temperature": 0.2,
+                "max_tokens": 400
+            }
+        }
+    )
 
 
 class ChatOut(BaseModel):
