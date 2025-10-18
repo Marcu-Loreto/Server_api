@@ -7,42 +7,36 @@ from openai import OpenAI
 import json
 from pathlib import Path
 import re
-from difflib import SequenceMatcher
 from io import BytesIO
 from collections import Counter
 import base64
-import networkx as nx
-from pyvis.network import Network
-from itertools import combinations
-from streamlit.components.v1 import html as st_html
+
+# cleaned imports: SequenceMatcher and base64 are stdlib, network/pyvis/wordcloud optional
+try:
+    from difflib import SequenceMatcher
+
+    _SEQUENCEMATCHER_AVAILABLE = True
+except Exception:
+    SequenceMatcher = None
+    _SEQUENCEMATCHER_AVAILABLE = False
 
 
-# ====== Dependências opcionais (tratamos fallback) ======
-
+# optional graph libs
 _WORDCLOUD_AVAILABLE = True
 try:
     from wordcloud import WordCloud
 except Exception:
     _WORDCLOUD_AVAILABLE = False
 
-_GRAPH_AVAILABLE = True
 try:
-    import networkx as nx
-    from pyvis.network import Network
+    import networkx as nx  # type: ignore
+    from pyvis.network import Network  # type: ignore
+
+    _GRAPH_AVAILABLE = True
 except Exception:
+    nx = None
+    Network = None
     _GRAPH_AVAILABLE = False
-
-_NETWORKX_AVAILABLE = True
-try:
-    import networkx as nx
-except Exception:
-    _NETWORKX_AVAILABLE = False
-
-_PYVIS_AVAILABLE = True
-try:
-    from pyvis.network import Network
-except Exception:
-    _PYVIS_AVAILABLE = False
 
 # Carrega variáveis do .env
 load_dotenv()
@@ -528,13 +522,6 @@ def render_graph_pyvis(
         net.add_edge(u, v, value=w, width=width, title=title)
 
     return net.generate_html(), None
-
-
-# from streamlit.components.v1 import html as st_html
-# import base64
-# import streamlit as st
-
-from streamlit.components.v1 import html as st_html
 
 
 def show_grafo_modal():

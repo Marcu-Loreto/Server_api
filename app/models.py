@@ -23,7 +23,7 @@ class ChatIn(BaseModel):
             "example": {
                 "message": "Resuma em 2 linhas as vantagens do meu produto.",
                 "temperature": 0.2,
-                "max_tokens": 400
+                "max_tokens": 400,
             }
         }
     )

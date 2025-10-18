@@ -26,7 +26,7 @@ from .core import (
 )
 
 
-#uvicorn app.main:app --reload --port 8000
+# uvicorn app.main:app --reload --port 8000
 # ========= Segurança por API Key =========
 API_TOKEN = os.getenv("API_TOKEN", "")  # defina no .env: API_TOKEN=uma-senha-forte
 api_key_header = APIKeyHeader(name="x-api-key", auto_error=False)
